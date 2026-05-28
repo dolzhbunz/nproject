@@ -17,10 +17,14 @@ class EnsureUserIsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->role === User::ROLE_ADMIN)
-        {
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
-        abort(403, 'Недостаточно прав для совершения операции');
+
+        if (Auth::user()->role !== User::ROLE_ADMIN) {
+            abort(403, 'Недостаточно прав для совершения операции');
+        }
+
+        return $next($request);
     }
 }

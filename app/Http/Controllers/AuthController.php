@@ -48,6 +48,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
             return Redirect::route('dashboard');
         }
+
+        return back()->withErrors([
+            'email' => 'Неверный email или пароль',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)

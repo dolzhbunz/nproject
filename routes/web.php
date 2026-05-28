@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
@@ -35,7 +36,17 @@ Route::middleware('auth')->group(function (){
    Route::get('/dashboard',[ProfileController::class, 'dashboard'])->name('dashboard');
    Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
 
-   Route::get('role-requests/create', [RoleRequestController::class, 'create'])->name('role_requests.create');
-   Route::post('role-requests', [RoleRequestController::class, 'store'])->name('role_requests.store');
+   Route::get('role-requests/create', [RoleRequestController::class, 'create'])->name('role-requests.create');
+   Route::post('role-requests', [RoleRequestController::class, 'store'])->name('role-requests.store');
 
+});
+
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/requests', [App\Http\Controllers\Admin\AdminRequestController::class, 'index'])->name('requests.index');
+    Route::get('/requests/{roleRequest}', [App\Http\Controllers\Admin\AdminRequestController::class, 'show'])->name('requests.show');
+
+    // Правильные маршруты для действий
+    Route::put('/requests/{roleRequest}/approve', [App\Http\Controllers\Admin\AdminRequestController::class, 'approve'])->name('requests.approve');
+    Route::put('/requests/{roleRequest}/reject', [App\Http\Controllers\Admin\AdminRequestController::class, 'reject'])->name('requests.reject');
 });

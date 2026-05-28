@@ -15,6 +15,10 @@ class ProfileController extends Controller
             ->where('status', 'pending')
             ->exists();
 
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
         $latestRequest = $user->requests()
             ->orderBy('created_at', 'desc')
             ->first();
