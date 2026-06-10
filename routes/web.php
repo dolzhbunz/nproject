@@ -18,11 +18,24 @@ Route::get('events/create', [\App\Http\Controllers\EventController::class, "crea
 
 Route::get('/events/edit/{id}', [\App\Http\Controllers\EventController::class, 'edit'])->name("events.edit");
 
-Route::get('/events/{id}', [\App\Http\Controllers\EventController::class, 'update'])->name("events.update");
+Route::put('/events/{id}', [EventController::class, 'update'])->name("events.update");
+Route::patch('/events/{id}', [EventController::class, 'update'])->name("events.update.patch");
 
 Route::get('/events', [\App\Http\Controllers\EventController::class, 'index'])->name("events.index");
 Route::get('/events/{id}', [\App\Http\Controllers\EventController::class, 'show'])->name("events.show");
 Route::delete('events/{id}', [\App\Http\Controllers\EventController::class, 'destroy'])->name("events.destroy");
+
+Route::middleware('auth')->group(function () {
+    Route::post('/events/{event}/attachments', [AttachmentController::class, 'store'])
+        ->name('events.attachments.store');
+
+    Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])
+        ->name('attachments.destroy');
+
+    Route::get('/attachments/{attachment}/download', [AttachmentController::class, 'download'])
+        ->name('attachments.download');
+});
+
 
 Route::middleware('guest')->group(function (){
     Route::get('/register',[AuthController::class, 'showRegister'])->name('register');
@@ -37,16 +50,19 @@ Route::middleware('auth')->group(function (){
    Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
 
    Route::get('role-requests/create', [RoleRequestController::class, 'create'])->name('role-requests.create');
-   Route::post('role-requests', [RoleRequestController::class, 'store'])->name('role-requests.store');
+   Route::post('role-requests', [RoleRequestController::class, 'store'])->name('role_requests.store');
 
 });
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
     Route::get('/requests', [App\Http\Controllers\Admin\AdminRequestController::class, 'index'])->name('requests.index');
     Route::get('/requests/{roleRequest}', [App\Http\Controllers\Admin\AdminRequestController::class, 'show'])->name('requests.show');
 
-    // Правильные маршруты для действий
     Route::put('/requests/{roleRequest}/approve', [App\Http\Controllers\Admin\AdminRequestController::class, 'approve'])->name('requests.approve');
     Route::put('/requests/{roleRequest}/reject', [App\Http\Controllers\Admin\AdminRequestController::class, 'reject'])->name('requests.reject');
+
+    Route::get('/users/{user}', [App\Http\Controllers\Admin\AdminUserController::class, 'show'])->name('users.show');
 });

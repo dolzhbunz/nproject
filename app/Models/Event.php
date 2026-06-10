@@ -15,5 +15,9 @@ class Event extends Model
         'end_time'
     ];
 
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
 
 }

@@ -56,11 +56,14 @@ class EventController extends Controller
         return Redirect::route('events.index')->with('success', '');
     }
 
-    public function destroy($id)
+    public function destroy($id, AttachmentService $attachmentService)
     {
         $event = Event::findOrFail($id);
+        $attachmentService->deleteAllEventAttachments($event);
+
         $this->eventService->deleteEvent($event);
-        return Redirect::route('events.destroy')->with('success', '');
+
+        return Redirect::route('events.index')->with('success', 'Событие и все вложения удалены');
     }
 
 

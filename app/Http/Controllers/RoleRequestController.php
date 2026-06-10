@@ -19,8 +19,8 @@ class RoleRequestController extends Controller
 
     public function create()
     {
-        $hasPending = Auth::user()->requests()->where('status','pending')->exists();
-        return View::make('role_requests.create', compact('hasPending'));
+        $hasPending = RoleRequest::pending()->forUser(Auth::id())->exists();
+        return view('role_requests.create', compact('hasPending'));
     }
 
     public function store(StoreRoleRequest $request)

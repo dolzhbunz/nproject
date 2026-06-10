@@ -1,11 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        form{
-            display:flex;
-        }
-    </style>
     <div class="row justify-content-center">
         <div class="card-header bd-green"> <h4>Регистрация нового пользователя</h4> </div>
 
@@ -42,3 +37,5 @@
         </div>
 
     </div>
+
+@endsection

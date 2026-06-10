@@ -16,24 +16,24 @@
 
 <main class="main">
     <div >
-        <form class="" method="post" action="{{route('events.update', $event->$event)}}">
-            @method('')
+        <form class="" method="post" action="{{ route('events.update', $event->id) }}">
+            @method('PUT')
             @csrf
 
             <label> Имя события:
-                <input type="text" name="title" placeholder="Тема события" value="{{$event->$title}}">
+                <input type="text" name="title" placeholder="Тема события" value="{{$event->title}}">
             </label>
 
             <label> Описание события:
-                <input type="text" name="description" placeholder="Введи описание события" value="{{$event->$description}}">
+                <input type="text" name="description" placeholder="Введи описание события" value="{{$event->description}}">
             </label>
 
             <label> Начальное время события:
-                <input type="" name="start_time" placeholder="" value="{{$event->$start_time}}">
+                <input type="" name="start_time" placeholder="" value="{{$event->start_time}}">
             </label>
 
             <label> Конец события:
-                <input type="" name="end_time" placeholder="" value="{{$event->$end_time}}">
+                <input type="" name="end_time" placeholder="" value="{{$event->end_time}}">
             </label>
         </form>
     </div>

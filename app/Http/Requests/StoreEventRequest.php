@@ -23,10 +23,10 @@ class StoreEventRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|string|',
-            'description' => 'sometimes|string|',
-            'start_time' => 'sometimes|',
-            'end_time' => 'sometimes|'
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_time' => 'required|date_format:Y-m-d H:i:s',
+            'end_time' => 'required|date_format:Y-m-d H:i:s|after:start_time',
         ];
     }
 }

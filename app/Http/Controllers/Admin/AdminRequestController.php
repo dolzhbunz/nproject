@@ -7,6 +7,7 @@ use App\Http\Requests\ProcessRoleRequest;
 use App\Models\RoleRequest;
 use App\Models\RoleRequestLog;
 use App\Services\RoleRequestService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdminRequestController extends Controller
@@ -19,7 +20,7 @@ class AdminRequestController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $status = $request->get('status', 'pending');
 
@@ -34,6 +35,7 @@ class AdminRequestController extends Controller
         }
 
         $requests = $query->latest()->paginate(15);
+        return view('admin.requests.index', compact('requests', 'status'));
     }
 
     public function show(RoleRequest $roleRequest)

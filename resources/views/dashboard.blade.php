@@ -11,7 +11,7 @@
                     <p>Роль: {{Auth::user()->role}}</p>
 
                     @if(!$hasPendingRequest)
-                        <a href="{{route('role-requests.create')}}" class="btn btn-primary">
+                        <a href="{{route('role_requests.create')}}" class="btn btn-primary">
                             Подать заявку на смену роли
                         </a>
                     @elseif($latestRequest->status == 'pending')

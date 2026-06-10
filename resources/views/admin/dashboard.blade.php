@@ -11,10 +11,10 @@
                     <div class="card-body">
 
                         <div class="row mb-4">
-                            <div class="col-md-4">
-                                <div class="card bg-primary text-white">
+                            <div class="">
+                                <div class="card bg">
                                     <div class="card-body text-center">
-                                        <h5 class="card-title">Заявки на рассмотрении</h5>
+                                        <h5 class="">Заявки на рассмотрении</h5>
                                         <h2 class="display-4">{{ $stats['pending_requests'] ?? 0 }}</h2>
                                         <a href="{{ route('admin.requests.index') }}" class="btn btn-light btn-sm">
                                             Просмотреть все
@@ -23,8 +23,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <div class="card bg-success text-white">
+                            <div class="">
+                                <div class="card bg">
                                     <div class="card-body text-center">
                                         <h5 class="card-title">Всего пользователей</h5>
                                         <h2 class="display-4">{{ $stats['total_users'] ?? 0 }}</h2>
@@ -35,7 +35,7 @@
 
 
                         <div class="mt-5">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="">
                                 <h4>Ожидающие заявки на смену роли</h4>
                             </div>
                             <hr>
@@ -65,22 +65,18 @@
                                                 <td><span class="">{{ $request->user->role }}</span></td>
                                                 <td><span class="">{{ $request->requested_role }}</span></td>
                                                 <td>
-                                                    <button type="button" class="btn btn-sm btn-link text-decoration-none p-0" data-bs-toggle="modal" data-bs-target="#reasonModal{{ $request->id }}">
-                                                        Показать причину
-                                                    </button>
 
                                                     <div class="" id="{{ $request->id }}">
                                                         <div class="">
                                                             <div class="">
                                                                 <div class="">
-                                                                    <h5 class="">Причина запроса от {{ $request->user->name }}</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                                    <h6 class="">Причина запроса от {{ $request->user->name }}</h6>
+
                                                                 </div>
                                                                 <div class="">
                                                                     <p class="mb-0">{{ $request->reason ?? 'Причина не указана' }}</p>
                                                                 </div>
                                                                 <div class="">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -107,27 +103,23 @@
                                     </table>
                                 </div>
 
-                                <div class="d-flex justify-content-center mt-4">
+                                <div class="">
                                     {{ $pendingRequests->links() }}
                                 </div>
                             @else
                                 <div class="alert alert-success">
-                                    <i class="bi bi-check-circle-fill"></i> Нет ожидающих заявок на смену роли. Отличная работа!
+                                    <i class=""></i> Нет ожидающих заявок на смену роли
                                 </div>
                             @endif
                         </div>
 
                         <div class="mt-4">
-                            <h5>Быстрые ссылки</h5>
                             <hr>
-                            <div class="btn-group" role="group">
-                                <a href="{{ route('admin.requests.index') }}" class="btn btn-outline-primary">
-                                    Все заявки
-                                </a>
-                                <a href="{{ route('logout') }}"
-                                   class="btn btn-outline-danger">
-                                    Выйти
-                                </a>
+                            <div class="btn-group" role="">
+                                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-danger">Выйти</button>
+                                </form>
                             </div>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf

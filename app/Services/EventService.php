@@ -33,9 +33,9 @@ class EventService
         }
     }
 
-    public function deleteEvent(Event $event, array $data) // лишний параметр $data
+    public function deleteEvent(Event $event): void
     {
-        $event->delete($data); // delete() не принимает аргументы
+        $event->delete();
     }
 
 

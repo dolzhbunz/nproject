@@ -52,7 +52,6 @@ class EventPolicy
 //        return $user->id === $event->event_id;
 
         return in_array($user->role, [
-            User::ROLE_MEMBER,
             User::ROLE_EDITOR,
             User::ROLE_AUTHOR
         ]);
