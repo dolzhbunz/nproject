@@ -1,53 +1,61 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+@extends('layouts.app')
 
-<header>
-    <h1 class=""> Создание нового события</h1>
-    <p class=""></p>
-</header>
+@section('content')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Создание нового события</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('events.store') }}" enctype="multipart/form-data">
+                            @csrf
 
-<main class="main">
-    <div >
-        <form method="post" action="{{ route('events.store') }}">
-            @csrf
+                            <div class="mb-3">
+                                <label>Название события:</label>
+                                <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" required>
+                                @error('title')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-            <div class="mb-3">
-                <label>Название события:</label>
-                <input type="text" name="title" class="form-control" required>
+                            <div class="mb-3">
+                                <label>Описание:</label>
+                                <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="3"></textarea>
+                                @error('description')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Дата и время начала:</label>
+                                <input type="datetime-local" name="start_time" class="form-control @error('start_time') is-invalid @enderror" required>
+                                @error('start_time')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Дата и время окончания:</label>
+                                <input type="datetime-local" name="end_time" class="form-control @error('end_time') is-invalid @enderror" required>
+                                @error('end_time')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="attachments" class="form-label">Вложения (максимум 5 файлов, каждый до 5MB):</label>
+                                <input type="file" name="attachments[]" multiple class="form-control" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt">
+                                <small class="text-muted">Поддерживаются: jpg, jpeg, png, pdf, doc, docx, txt</small>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Создать событие</button>
+                            <a href="{{ route('events.index') }}" class="btn btn-secondary">Отмена</a>
+                        </form>
+                    </div>
+                </div>
             </div>
-
-            <div class="mb-3">
-                <label>Описание:</label>
-                <textarea name="description" class="form-control" rows="3"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label>Дата и время начала:</label>
-                <input type="datetime-local" name="start_time" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label>Дата и время окончания:</label>
-                <input type="datetime-local" name="end_time" class="form-control" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Создать событие</button>
-        </form>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label for="attachments" class="form-label">Вложения</label>
-        <input type="file" name="attachments[]" multiple class="form-control" accept=".jpg,.png,.pdf,.doc,.docx,.txt">
-        <small class="text-muted">Максимум 5 файлов, каждый до 5MB</small>
-    </div>
-</main>
-</body>
-</html>
+@endsection

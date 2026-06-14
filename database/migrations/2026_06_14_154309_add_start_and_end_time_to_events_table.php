@@ -9,19 +9,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            // 1. Переименовываем start_date в start_time
-            $table->renameColumn('start_date', 'start_time');
+            // Добавляем колонки, если их нет
+            if (!Schema::hasColumn('events', 'start_time')) {
+                $table->dateTime('start_time')->nullable();
+            }
 
-            // 2. Добавляем end_time
-            $table->dateTime('end_time')->nullable()->after('start_time');
+            if (!Schema::hasColumn('events', 'end_time')) {
+                $table->dateTime('end_time')->nullable();
+            }
         });
     }
 
     public function down(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->renameColumn('start_time', 'start_date');
-            $table->dropColumn('end_time');
+            $table->dropColumn(['start_time', 'end_time']);
         });
     }
 };

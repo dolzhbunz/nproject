@@ -16,7 +16,7 @@ class AdminRequestController extends Controller
     public function __construct(RoleRequestService $service)
     {
         $this->middleware('auth');
-        $this->middleware('admin');
+        $this->middleware(\App\Http\Middleware\EnsureUserIsAdmin::class);
         $this->service = $service;
     }
 
@@ -49,20 +49,17 @@ class AdminRequestController extends Controller
     {
         $validated = $request->validated();
 
-        // 1. Меняем роль пользователя
-        $user = $roleRequest->user; // <-- ИСПРАВЛЕНО: было $roleRequest->validated() - это ошибка
+        $user = $roleRequest->user;
         $oldRole = $user->role;
         $user->role = $roleRequest->requested_role;
         $user->save();
 
-        // 2. Обновляем статус заявки через сервис
         $this->service->approveRequest($roleRequest);
 
-        // 3. Создаём лог (опционально)
         RoleRequestLog::create([
             'role_request_id' => $roleRequest->id,
-            'admin_id' => Auth::id(),
-            'comment' => $validated['comment'] ?? 'Заявка одобрена'
+            'processed_by' => Auth::user()->name,
+            'action' => 'approved',
         ]);
 
         return redirect()->route('admin.dashboard')->with('success', 'Заявка одобрена, роль пользователя изменена.');
@@ -72,14 +69,12 @@ class AdminRequestController extends Controller
     {
         $validated = $request->validated();
 
-        // Обновляем статус заявки
         $this->service->rejectRequest($roleRequest);
 
-        // Создаём лог с комментарием
         RoleRequestLog::create([
             'role_request_id' => $roleRequest->id,
-            'admin_id' => Auth::id(),
-            'comment' => $validated['comment'] ?? 'Заявка отклонена без комментария'
+            'processed_by' => Auth::user()->name,
+            'action' => 'rejected',
         ]);
 
         return redirect()->route('admin.dashboard')->with('info', 'Заявка отклонена.');

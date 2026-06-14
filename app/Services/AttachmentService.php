@@ -12,13 +12,13 @@ class AttachmentService
 {
     public function uploadAttachments(Event $event, array $files, int $userId): array
     {
+        \Log::info('Начинаем загрузку файлов для события ' . $event->id);
         $attachments = [];
-
         foreach ($files as $file) {
             $attachment = $this->uploadSingle($event, $file, $userId);
             $attachments[] = $attachment;
+            \Log::info('Загружен файл: ' . $attachment->file_name);
         }
-
         return $attachments;
     }
 
@@ -36,7 +36,7 @@ class AttachmentService
             'user_id' => $userId,
             'file_name' => $originalName,
             'file_path' => $path,
-            'file_type' => $file->getFileType(),
+            'file_type' => $file->getMimeType(),
             'size' => $file->getSize(),
         ]);
     }

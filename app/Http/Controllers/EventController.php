@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
@@ -9,6 +10,7 @@ use App\Services\EventService;
 //use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Redirect;
+use App\Services\AttachmentService;
 
 class EventController extends Controller
 {
@@ -28,17 +30,21 @@ class EventController extends Controller
         return View::make('events.create');
     }
 
-    public function store(StoreEventRequest $request)
+    public function store(StoreEventRequest $request, AttachmentService $attachmentService)
     {
         $validated = $request->validated();
+        $event = $this->eventService->createEvent($validated);
 
-        $this->eventService->createEvent($validated);
+        if ($request->hasFile('attachments')) {
+            $attachmentService->uploadAttachments($event, $request->file('attachments'), Auth::id());
+        }
+
         return Redirect::route('events.index')->with('success', '');
     }
 
     public function show($id)
     {
-        $event = Event::findOrFail($id);
+        $event = Event::with('attachments')->findOrFail($id);
         return view('events.show', compact('event'));
     }
 

@@ -6,17 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dateTime('end_time')->nullable()->after('start_time');
+            if (Schema::hasColumn('events', 'start_date')) {
+                $table->dropColumn('start_date');
+            }
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('end_time');
+            $table->datetime('start_date')->nullable();
         });
     }
 };

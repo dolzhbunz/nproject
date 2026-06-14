@@ -49,8 +49,8 @@ Route::middleware('auth')->group(function (){
    Route::get('/dashboard',[ProfileController::class, 'dashboard'])->name('dashboard');
    Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
 
-   Route::get('role-requests/create', [RoleRequestController::class, 'create'])->name('role-requests.create');
-   Route::post('role-requests', [RoleRequestController::class, 'store'])->name('role_requests.store');
+    Route::get('role-requests/create', [RoleRequestController::class, 'create'])->name('role_requests.create');
+    Route::post('role-requests', [RoleRequestController::class, 'store'])->name('role_requests.store');
 
 });
 

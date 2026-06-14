@@ -20,6 +20,8 @@ class AttachmentController extends Controller
 
     public function store(UploadAttachmentRequest $request, Event $event)
     {
+        \Log::info('Файлы:', $request->file('attachments'));
+
         $this->authorize('update', $event);
 
         $attachments = $this->attachmentService->uploadAttachments(

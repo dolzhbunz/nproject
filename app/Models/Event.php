@@ -12,7 +12,8 @@ class Event extends Model
         'title',
         'description',
         'start_time',
-        'end_time'
+        'end_time',
+        'user_id',
     ];
 
     public function attachments()
